@@ -1,0 +1,8 @@
+[submodule "deps/xz"]
+	path = deps/xz
+	url = https://git.tukaani.org/xz.git
+	branch = tags/v5.2.5
+[submodule "deps/php-src"]
+	path = deps/php-src
+	url = git@github.com:php/php-src.git
+	branch = tags/php-7.4.8
