@@ -6,3 +6,30 @@
 	path = deps/php-src
 	url = git@github.com:php/php-src.git
 	branch = tags/php-7.4.8
+[submodule "deps/libxml2"]
+	path = deps/libxml2
+	url = git@github.com:GNOME/libxml2.git
+	branch = tags/v2.9.10
+[submodule "deps/zlib"]
+	path = deps/zlib
+	url = git@github.com:madler/zlib.git
+	branch = tags/v1.2.11
+[submodule "deps/sqlite"]
+	path = deps/sqlite
+	url = git@github.com:sqlite/sqlite.git
+	branch = tags/version-3.32.3
+[submodule "deps/re2c"]
+	path = deps/re2c
+	url = https://github.com/skvadrik/re2c.git
+	branch = tags/2.0.1
+[submodule "deps/openssl"]
+	path = deps/openssl
+	url = https://github.com/openssl/openssl.git
+	branch = tags/OpenSSL_1_1_1g
+[submodule "deps/brotli"]
+	path = deps/brotli
+	url = https://github.com/google/brotli.git
+	branch = tags/v1.0.7
+[submodule "deps/curl"]
+	path = deps/curl
+	url = https://github.com/curl/curl.git
