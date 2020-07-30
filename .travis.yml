@@ -56,8 +56,8 @@ script:
   - |
     cd $WORK/deps/openssl
     ./config no-shared no-engine no-dso --prefix=$WORK --openssldir=$WORK
-    make -j $CPUS
-    make install
+    make -sj $CPUS
+    make -s install
 
   - |
     cd $WORK/deps/brotli
@@ -76,7 +76,7 @@ script:
   - |
     cd $WORK/deps/php-src
     ./buildconf --force
-    ./configure --prefix=$WORK --with-openssl=$WORK LIBS="-lpthread" SQLITE_CFLAGS="-I$WORK/include" SQLITE_LIBS="-L$WORK/lib -lsqlite3" OPENSSL_CFLAGS="-I$WORK/include" OPENSSL_LIBS="-L$WORK/lib -l:libssl.a -l:libcrypto.a -ldl -lpthread" --with-curl=$WORK --with-zlib --disable-cgi --enable-static
+    ./configure --prefix=$WORK --with-openssl=$WORK LIBS="-lpthread" SQLITE_CFLAGS="-I$WORK/include" SQLITE_LIBS="-L$WORK/lib -lsqlite3" CURL_CFLAGS="-I$WORK/include" CURL_LIBS="-L$WORK/lib -lcurl" OPENSSL_CFLAGS="-I$WORK/include" OPENSSL_LIBS="-L$WORK/lib -l:libssl.a -l:libcrypto.a -ldl -lpthread" --with-curl=$WORK --with-zlib --disable-cgi --enable-static
     make -sj $CPUS
     [ -z $CI ] || make test || true
     make install
