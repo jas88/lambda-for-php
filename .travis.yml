@@ -22,60 +22,60 @@ install:
   - export LDFLAGS=-L$WORK/lib
   - export CPPFLAGS=-I$WORK/include
 
-  - >
+  - |
     cd $WORK/deps/xz
     autoreconf -i
     ./configure --prefix=$WORK --disable-xz --disable-xzdec --disable-lzmadec --disable-lzmainfo --disable-scripts --disable-doc --disable-shared --enable-silent-rules
     make -j $CPUS
     make install
 
-  - >
+  - |
     cd $WORK/deps/libxml2
     autoreconf -i
     ./configure --prefix=$WORK --enable-silent-rules --disable-shared --with-pic --without-python
     make -j $CPUS
     make install
 
-  - >
+  - |
     cd $WORK/deps/zlib
     ./configure --const --static --64 --prefix=$WORK
     make -sj $CPUS
     make install
 
-  - >
+  - |
     cd $WORK/deps/sqlite
     ./configure --prefix=$WORK --disable-shared --enable-all --disable-gcov --with-pic
     make -s
     make install
 
-  - >
+  - |
     cd $WORK/deps/re2c
     autoreconf -i
     ./configure --prefix=$WORK
     make -sj $CPUS
     make install
 
-  - >
+  - |
     cd $WORK/deps/openssl
     ./config no-shared no-engine no-dso --prefix=$SSLDIR --openssldir=$SSLDIR
     make -j $CPUS
     make install
 
-  - >
+  - |
     cd $WORK/deps/brotli
     ./bootstrap
     ./configure --prefix=$WORK --disable-shared --with-pic
     make -j $CPUS
     make install
 
-  - >
+  - |
     cd $WORK/deps/curl
     autoreconf -i
     LIBS=-lbrotlicommon ./configure --prefix=$WORK --enable-static --disable-shared --with-ssl=$SSLDIR --with-nghttp2 --with-ngtcp2 --enable-alt-svc --with-libidn2 --with-brotli
     make -sj $CPUS
     make install
 
-  - >
+  - |
     # Compile PHP $PHPV with static OpenSSL, and install to /home/ec2-user/php-7-bin
     cd $WORK/deps/php-src
     ./buildconf --force
