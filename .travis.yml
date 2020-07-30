@@ -12,13 +12,7 @@ env:
 
 script:
   - sudo apt-get install autoconf autopoint pigz libtool pkg-config tclsh bc bison zip unzip
-  - |
-    export WORK=$(pwd)
-    export PKG_CONFIG_PATH=$WORK/lib/pkgconfig
-    echo $PATH|fgrep -q $WORK/bin || export PATH=$WORK/bin:$PATH
-    export CPUS=$(fgrep -c processor /proc/cpuinfo)
-    export LDFLAGS=-L$WORK/lib
-    export CPPFLAGS=-I$WORK/include
+  - source vars.sh
 
   - |
     cd $WORK/deps/xz
@@ -74,6 +68,7 @@ script:
     make install
 
   - |
+    ls -lh $WORK/lib $WORK/include
     cd $WORK/deps/php-src
     ./buildconf --force
     ./configure --prefix=$WORK --with-openssl=$WORK LIBS="-lpthread" SQLITE_CFLAGS="-I$WORK/include" SQLITE_LIBS="-L$WORK/lib -lsqlite3" CURL_CFLAGS="-I$WORK/include" CURL_LIBS="-L$WORK/lib -lcurl" OPENSSL_CFLAGS="-I$WORK/include" OPENSSL_LIBS="-L$WORK/lib -l:libssl.a -l:libcrypto.a -ldl -lpthread" --with-curl=$WORK --with-zlib --disable-cgi --enable-static
