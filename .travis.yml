@@ -44,7 +44,7 @@ install:
 
   - |
     cd $WORK/deps/sqlite
-    ./configure --prefix=$WORK --disable-shared --enable-all --disable-gcov --with-pic
+    ./configure --prefix=$WORK --disable-shared --enable-all --disable-gcov --with-pic --disable-tcl
     make -s
     make install
 
