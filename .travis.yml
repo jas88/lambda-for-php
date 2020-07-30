@@ -10,26 +10,20 @@ env:
   global:
     - COMPOSERV=1.10.9
 
-install:
-  - sudo apt-get install autoconf autopoint pigz
-  - export WORK=$(pwd)
-  - export PKG_CONFIG_PATH=$WORK/lib/pkgconfig
-  - echo $PATH|fgrep -q $WORK/bin || export PATH=$WORK/bin:$PATH
-  - export CPUS=$(fgrep -c processor /proc/cpuinfo)
-  - export LDFLAGS=-L$WORK/lib
-  - export CPPFLAGS=-I$WORK/include
+script:
+  - sudo apt-get install autoconf autopoint pigz libtool pkg-config tclsh bc bison zip unzip
+  - |
+    export WORK=$(pwd)
+    export PKG_CONFIG_PATH=$WORK/lib/pkgconfig
+    echo $PATH|fgrep -q $WORK/bin || export PATH=$WORK/bin:$PATH
+    export CPUS=$(fgrep -c processor /proc/cpuinfo)
+    export LDFLAGS=-L$WORK/lib
+    export CPPFLAGS=-I$WORK/include
 
   - |
     cd $WORK/deps/xz
     autoreconf -i
     ./configure --prefix=$WORK --disable-xz --disable-xzdec --disable-lzmadec --disable-lzmainfo --disable-scripts --disable-doc --disable-shared --enable-silent-rules
-    make -j $CPUS
-    make install
-
-  - |
-    cd $WORK/deps/libxml2
-    autoreconf -i
-    ./configure --prefix=$WORK --enable-silent-rules --disable-shared --with-pic --without-python
     make -j $CPUS
     make install
 
@@ -40,8 +34,15 @@ install:
     make install
 
   - |
+    cd $WORK/deps/libxml2
+    autoreconf -i
+    ./configure --prefix=$WORK --enable-silent-rules --disable-shared --with-pic --without-python
+    make -j $CPUS
+    make install
+
+  - |
     cd $WORK/deps/sqlite
-    ./configure --prefix=$WORK --disable-shared --enable-all --disable-gcov --with-pic --disable-tcl
+    ./configure --prefix=$WORK --disable-shared --enable-all --disable-gcov --with-pic --disable-tcl --disable-readline
     make -s
     make install
 
@@ -62,7 +63,7 @@ install:
     cd $WORK/deps/brotli
     ./bootstrap
     ./configure --prefix=$WORK --disable-shared --with-pic
-    make -j $CPUS
+    make -sj $CPUS
     make install
 
   - |
@@ -75,14 +76,18 @@ install:
   - |
     cd $WORK/deps/php-src
     ./buildconf --force
-    ./configure --prefix=$WORK --with-openssl=$WORK LIBS="-lpthread" OPENSSL_CFLAGS="-I$WORK/include" OPENSSL_LIBS="-L$WORK/lib -l:libssl.a -l:libcrypto.a -ldl -lpthread" --with-curl=$WORK --with-zlib --disable-cgi --enable-static
+    ./configure --prefix=$WORK --with-openssl=$WORK LIBS="-lpthread" SQLITE_CFLAGS="-I$WORK/include" SQLITE_LIBS="-L$WORK/lib -lsqlite3" OPENSSL_CFLAGS="-I$WORK/include" OPENSSL_LIBS="-L$WORK/lib -l:libssl.a -l:libcrypto.a -ldl -lpthread" --with-curl=$WORK --with-zlib --disable-cgi --enable-static
     make -sj $CPUS
     [ -z $CI ] || make test || true
     make install
 
-script:
-  mkdir -p /tmp/$$/bin
-  cp $WORK/bin/php ./
-  strip php
-  curl -sL https://getcomposer.org/download/$COMPOSERV/composer.phar > composer.phar
-  ./php composer.phar require guzzlehttp/guzzle
+  - |
+    mkdir -p /tmp/$$/bin
+    cd /tmp/$$
+    cp $WORK/bin/php bin/
+    strip bin/php
+    pigz -K11 bin/php
+    printf "@ php\n@=bin/php" | zipnote -w bin/php.zip
+    curl -sL https://getcomposer.org/download/$COMPOSERV/composer.phar > composer.phar
+    bin/php composer.phar require guzzlehttp/guzzle
+    zip -9r runtime.zip composer.* vendor
