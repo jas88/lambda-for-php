@@ -1,5 +1,6 @@
 dist: bionic
-language: minimal
+language: c
+cache: ccache
 
 addons:
   apt:
@@ -8,9 +9,6 @@ addons:
 env:
   global:
     - COMPOSERV=1.10.9
-    
-cache:
-  - ccache: true
 
 install:
   - sudo apt-get install autoconf autopoint pigz
