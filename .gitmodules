@@ -4,19 +4,19 @@
 	branch = tags/v5.2.5
 [submodule "deps/php-src"]
 	path = deps/php-src
-	url = git@github.com:php/php-src.git
+	url = https://github.com/php/php-src.git
 	branch = tags/php-7.4.8
 [submodule "deps/libxml2"]
 	path = deps/libxml2
-	url = git@github.com:GNOME/libxml2.git
+	url = https://github.com/GNOME/libxml2.git
 	branch = tags/v2.9.10
 [submodule "deps/zlib"]
 	path = deps/zlib
-	url = git@github.com:madler/zlib.git
+	url = https://github.com/madler/zlib.git
 	branch = tags/v1.2.11
 [submodule "deps/sqlite"]
 	path = deps/sqlite
-	url = git@github.com:sqlite/sqlite.git
+	url = https://github.com/sqlite/sqlite.git
 	branch = tags/version-3.32.3
 [submodule "deps/re2c"]
 	path = deps/re2c
@@ -33,3 +33,4 @@
 [submodule "deps/curl"]
 	path = deps/curl
 	url = https://github.com/curl/curl.git
+	branch = tags/curl-7_71_1
