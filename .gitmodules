@@ -1,6 +1,6 @@
 [submodule "deps/xz"]
 	path = deps/xz
-	url = https://git.tukaani.org/xz.git
+	url = https://github.com/xz-mirror/xz.git
 [submodule "deps/php-src"]
 	path = deps/php-src
 	url = https://github.com/php/php-src.git
