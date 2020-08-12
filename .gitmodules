@@ -13,7 +13,6 @@
 [submodule "deps/sqlite"]
 	path = deps/sqlite
 	url = https://github.com/sqlite/sqlite.git
-	branch = origin/branch-3.32
 [submodule "deps/re2c"]
 	path = deps/re2c
 	url = https://github.com/skvadrik/re2c.git
