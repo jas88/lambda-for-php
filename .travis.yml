@@ -11,7 +11,7 @@ env:
     - COMPOSERV=1.10.9
 
 script:
-  - sudo apt-get install autoconf autopoint pigz libtool pkg-config tclsh bc bison zip unzip
+  - sudo apt-get install ccache autoconf autopoint pigz libtool pkg-config tclsh bc bison zip unzip
   - source vars.sh
   - ln -sf /bin/true `which pkgconfig`
 
@@ -74,7 +74,8 @@ script:
     ./buildconf --force
     ./configure --prefix=$WORK --with-openssl=$WORK LIBS="-l:libbrotlidec.a -l:libbrotlienc.a -l:libbrotlicommon.a -lpthread" SQLITE_CFLAGS="-I$WORK/include" SQLITE_LIBS="-L$WORK/lib -lsqlite3" CURL_CFLAGS="-I$WORK/include" CURL_LIBS="-L$WORK/lib -lcurl -l:libbrotlidec.a -l:libbrotlienc.a -l:libbrotlicommon.a -lpthread" OPENSSL_CFLAGS="-I$WORK/include" OPENSSL_LIBS="-L$WORK/lib -l:libssl.a -l:libcrypto.a -ldl -lpthread" --with-zlib --disable-cgi --enable-static || cat config.log
     make -sj $CPUS
-    [ -z $CI ] || make test 2>&1 | egrep -v "^PASS|SKIP" || true
+    mkdir -p /tmp/dist
+    [ -z $CI ] || make test &>/tmp/dist/php-test.log || true
     make install
 
   - |
@@ -88,3 +89,4 @@ script:
     zip -9r runtime.zip composer.* vendor
     pigz -K11 bin/php
     printf "@ php\n@=bin/php" | zipnote -w bin/php.zip
+    mv bin/php.zip runtime.zip /tmp/dist/
