@@ -1,6 +1,10 @@
 dist: bionic
 language: minimal
-cache: ccache
+cache:
+  ccache: true
+  bundler: true
+  directories:
+  - $HOME/.rvm
 
 addons:
   apt:
@@ -12,6 +16,7 @@ env:
 
 script:
   - sudo apt-get install ccache autoconf autopoint pigz libtool pkg-config tclsh bc bison zip unzip
+  - gem install dpl
   - source vars.sh
   - ln -sf /bin/true `which pkgconfig`
 
@@ -90,3 +95,12 @@ script:
     pigz -K11 bin/php
     printf "@ php\n@=bin/php" | zipnote -w bin/php.zip
     mv bin/php.zip runtime.zip /tmp/dist/
+
+deploy:
+  provider: releases
+  api_key:
+    secure: SXFeInaUbW/sS0XaWZHaS1JyZd0sUnVygsnS7X0cxoABW9fVfud2oZY4X6wSjNBne2rqYKYqYmlKRIWA1M32yYxFt1tsPVoYXLkSsPLTBLOcMKMHtJ3SJAGDsTAnbSEQPHQ94Ol5dIvqsSXB/JYIENh2YNh/7EW5prExMRgz/VZhW5mmki/wYjBQntnA3OsAc9DORlK+4OMlf+To1Nf8IkBnO/2+yBARTWU4MU2rmLrEIEF4q/2g6spf7EPDzwQKv9pwUKb5rhtL7tLQgeskxIDlghC4BesqE0JKQfzDuNJ+Wym5hVCpVj11/Tc65zNr5Tpa7AYSz93vypwuiZhdm24o7J89xdw2Xv0xUGUezszoTSeM0tlhz04nGRxi9O/0rllOzXrAbVedyOL/wYvRRPdHVV9pFNHTzYAK8imYPORLzbnueKVacJ2FTdf0P4GcR8WUHxW5Kvk1XNMI6lKy0DVx1kf+0xjdSlG23ZFehH2QkMvfAncbYUtU3DxOHsobyXdZpA4Jpbudh1j6pkgRNpWRKfyZqhMudU1xaZfVHzoQIMW4A7Rvpj6PFc0WNKvYThuqlOHViNtt72wO8j+2IOTeZkPLSwu3zvzoS3Q7KWMewMtD/lHiY8GkteQ7W9Xhjd26AhpHUCVBYcheX/EBKN2EXw7c6eW0AQXxZVM37o8=
+  file: "/tmp/dist/*"
+  on:
+    repo: jas88/lambda-for-php
+  skip_cleanup: 'true'
